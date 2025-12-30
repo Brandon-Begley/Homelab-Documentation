@@ -1,0 +1,9 @@
+# Firewall Rules
+
+This document will cover firewall rules and traffic flow between VLANs.
+
+Planned topics:
+- Inter-VLAN access
+- Internet-only networks
+- Management plane isolation
+- Future zero-trust considerations
