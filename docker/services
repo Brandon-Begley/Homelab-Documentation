@@ -1,0 +1,11 @@
+# Docker Services
+
+This document will describe individual Docker services hosted in the lab.
+
+Planned services:
+- Plex
+- Tautulli
+- IT-Tools
+- Monitoring tools
+
+Each service will include purpose and basic configuration notes.
