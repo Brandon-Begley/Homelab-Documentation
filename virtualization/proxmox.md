@@ -24,14 +24,25 @@ Using Proxmox has provided practical experience beyond basic virtualization conc
 
 ---
 
-## Host Overview
+## Hosts
+
+Proxmox VE is deployed on two physical hosts in the homelab:
+
+### Primary Node
 
 - **Hypervisor:** Proxmox VE
 - **Network VLAN:** VLAN 20 (Homelab / Servers)
 - **Management Access:** Web UI over HTTPS
 - **Primary Roles:** VM hosting, container hosting, service isolation
 
-The Proxmox host is treated as critical infrastructure and is isolated from end-user devices.
+### HP MicroServer Gen10 (Storage Node)
+
+- **Hypervisor:** Proxmox VE
+- **Hardware:** [HP ProLiant MicroServer Gen10](../hardware/hp-microserver-gen10.md)
+- **Network VLAN:** VLAN 20 (Homelab / Servers)
+- **Primary Role:** NAS/storage via TrueNAS VM with disk passthrough
+
+Both Proxmox hosts are treated as critical infrastructure and isolated from end-user devices.
 
 ---
 
@@ -41,10 +52,11 @@ Virtual machines are used for workloads that benefit from:
 - Full OS isolation
 - Windows-based services
 - Domain services
+- Direct hardware access (disk passthrough)
 
 ### Windows Server VMs
 
-Proxmox hosts two Windows Server virtual machines:
+The primary Proxmox node hosts two Windows Server virtual machines:
 - **DC01** – Primary Domain Controller
 - **DC02** – Secondary Domain Controller
 
@@ -58,6 +70,10 @@ Running domain controllers in Proxmox provided experience with:
 - DNS dependency handling
 - Domain controller promotion and demotion
 - Troubleshooting replication and role assignment
+
+### TrueNAS VM (MicroServer Gen10)
+
+The MicroServer Gen10 Proxmox node hosts a [TrueNAS](truenas.md) VM with physical disk passthrough. This VM provides centralized NAS services to the homelab using a ZFS mirror vdev pool (RAID 10 equivalent) for redundancy and performance.
 
 ---
 
