@@ -16,6 +16,6 @@ Personal homelab documentation covering hardware, networking, virtualization, st
 
 | Node | Role |
 |------|------|
-| **Hogwarts** | Core services — Plex, Home Assistant, Immich, Homepage, Tailscale, HomeLabel, Pi-hole, AD/DNS |
+| **Hogwarts** | Core services — Plex, Home Assistant, Immich, Homepage, Tailscale, Homelable, Pi-hole, AD/DNS |
 | **Death-Star** | Monitoring & automation — Mealie, AMP, Uptime Kuma, Prometheus+Grafana, Coder, n8n |
 | **MoServer** | Storage — Proxmox + TrueNAS VM (ZFS RAID 10) |

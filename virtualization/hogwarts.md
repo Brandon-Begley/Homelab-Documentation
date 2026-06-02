@@ -25,7 +25,7 @@ Hogwarts is the primary Proxmox node in the homelab. It hosts the majority of co
 | [Immich](#immich) | LXC / VM | Self-hosted photo backup and management |
 | [Homepage](#homepage) | LXC | Homelab dashboard |
 | [Tailscale](#tailscale) | LXC | VPN / secure remote access |
-| [HomeLabel](#homelabel) | LXC / VM | Home inventory / labeling |
+| [Homelable](#homelable) | LXC / VM | Homelab infrastructure visualizer with live status monitoring |
 | [Pi-hole](#pi-hole) | LXC | DNS-level ad blocking |
 
 ---
@@ -75,9 +75,16 @@ Key benefits:
 
 ---
 
-### HomeLabel
+### Homelable
 
-HomeLabel is used for home inventory and labeling — tracking physical items, their locations, and generating labels for organized storage.
+[Homelable](https://github.com/Pouzor/homelable) is a self-hosted infrastructure visualization tool that generates interactive network diagrams of the homelab with live status monitoring.
+
+Key features used:
+- **Network scanning** — discovers devices and services via nmap across configured CIDR ranges
+- **Health monitoring** — tracks node status (online/offline) via ping, HTTP, TCP, and Prometheus metrics
+- **Zigbee integration** — imports Zigbee2MQTT topology from MQTT for smart home device mapping
+- **Homepage widget** — exposes a stats endpoint compatible with the Homepage `customapi` widget
+- **Live view** — read-only shareable snapshot of the network canvas without requiring login
 
 ---
 

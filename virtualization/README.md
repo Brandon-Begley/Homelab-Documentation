@@ -6,7 +6,7 @@ This section documents the virtualization layer of the homelab. Proxmox VE runs 
 
 | Node | Role | Key Services |
 |------|------|-------------|
-| [Hogwarts](hogwarts.md) | Core homelab services | Plex, Home Assistant, Immich, Homepage, Tailscale, HomeLabel, Pi-hole |
+| [Hogwarts](hogwarts.md) | Core homelab services | Plex, Home Assistant, Immich, Homepage, Tailscale, Homelable, Pi-hole |
 | [Death-Star](death-star.md) | Monitoring, automation, dev, gaming | Mealie, AMP, Uptime Kuma, Prometheus+Grafana, Coder, n8n |
 | [MoServer](../hardware/hp-microserver-gen10.md) | NAS / Storage | TrueNAS VM (ZFS RAID 10) |
 

@@ -35,7 +35,7 @@ All nodes reside on **VLAN 20 (Homelab / Servers)** and are managed via their re
 
 The primary node hosting most core self-hosted services. See [Hogwarts documentation](hogwarts.md) for the full service list.
 
-Key services: Plex, Home Assistant, Immich, Homepage, Tailscale, HomeLabel, Pi-hole, DC01/DC02 (Active Directory)
+Key services: Plex, Home Assistant, Immich, Homepage, Tailscale, Homelable, Pi-hole, DC01/DC02 (Active Directory)
 
 ---
 
