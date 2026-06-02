@@ -12,7 +12,10 @@ Personal homelab documentation covering hardware, networking, virtualization, st
 | [Docker](docker/README.md) | Containerized services |
 | [Dashboards](dashboards/homepage/README.md) | Homepage and monitoring dashboards |
 
-## Key Infrastructure
+## Proxmox Nodes
 
-- **Primary Proxmox node** — Windows Server DCs (AD/DNS), media services, containers
-- **HP MicroServer Gen10** — Proxmox + TrueNAS VM with ZFS mirror vdev pool (RAID 10) for centralized NAS storage
+| Node | Role |
+|------|------|
+| **Hogwarts** | Core services — Plex, Home Assistant, Immich, Homepage, Tailscale, HomeLabel, Pi-hole, AD/DNS |
+| **Death-Star** | Monitoring & automation — Mealie, AMP, Uptime Kuma, Prometheus+Grafana, Coder, n8n |
+| **MoServer** | Storage — Proxmox + TrueNAS VM (ZFS RAID 10) |

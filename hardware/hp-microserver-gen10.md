@@ -8,6 +8,7 @@ The HP ProLiant MicroServer Gen10 serves as a dedicated NAS/storage server in th
 
 | Component | Details |
 |-----------|---------|
+| **Hostname** | MoServer |
 | **Model** | HP ProLiant MicroServer Gen10 |
 | **Form Factor** | Tower (ultra-compact) |
 | **Drive Bays** | 4x non-hot-plug LFF (3.5") |
