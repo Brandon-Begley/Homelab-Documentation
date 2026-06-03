@@ -1,11 +1,6 @@
 # Proxmox Virtualization Environment
 
-This document describes how Proxmox VE is used as the core virtualization platform in my homelab.
-
-Proxmox serves as the foundation for hosting:
-- Virtual machines
-- Linux containers (LXC)
-- Self-hosted services (including Plex-related workloads)
+Proxmox VE is the core virtualization platform across the homelab, deployed on three physical nodes: **Hogwarts**, **Death-Star**, and **MoServer**.
 
 The goal of this setup is to gain hands-on experience with enterprise-style virtualization while supporting real services used daily.
 
@@ -14,107 +9,92 @@ The goal of this setup is to gain hands-on experience with enterprise-style virt
 ## Why Proxmox
 
 Proxmox was chosen for the following reasons:
-- Native support for both VMs and containers
+- Native support for both VMs and LXC containers
 - Web-based management interface
-- Strong networking capabilities
+- Strong networking and VLAN capabilities
 - Snapshot and backup support
 - Widely used in homelab and small enterprise environments
 
-Using Proxmox has provided practical experience beyond basic virtualization concepts.
+---
+
+## Cluster Overview
+
+| Node | Hostname | Primary Role |
+|------|----------|-------------|
+| [Hogwarts](hogwarts.md) | `hogwarts` | Core homelab services (Plex, Home Assistant, Immich, Pi-hole, etc.) |
+| [Death-Star](death-star.md) | `death-star` | Monitoring, automation, dev tools, game servers |
+| [MoServer](../hardware/hp-microserver-gen10.md) | `moserver` | NAS / Storage — TrueNAS VM with ZFS RAID 10 |
+
+All nodes reside on **VLAN 20 (Homelab / Servers)** and are managed via their respective Proxmox web UIs over HTTPS.
 
 ---
 
-## Host Overview
+## Node Details
 
-- **Hypervisor:** Proxmox VE
-- **Network VLAN:** VLAN 20 (Homelab / Servers)
-- **Management Access:** Web UI over HTTPS
-- **Primary Roles:** VM hosting, container hosting, service isolation
+### Hogwarts
 
-The Proxmox host is treated as critical infrastructure and is isolated from end-user devices.
+The primary node hosting most core self-hosted services. See [Hogwarts documentation](hogwarts.md) for the full service list.
+
+Key services: Plex, Home Assistant, Immich, Homepage, Tailscale, Homelable, Pi-hole, DC01/DC02 (Active Directory)
 
 ---
 
-## Virtual Machine Design
+### Death-Star
 
-Virtual machines are used for workloads that benefit from:
-- Full OS isolation
-- Windows-based services
-- Domain services
+The secondary node dedicated to monitoring infrastructure, automation, development tooling, and game server hosting. See [Death-Star documentation](death-star.md) for the full service list.
 
-### Windows Server VMs
+Key services: Mealie, AMP, Uptime Kuma, Prometheus + Grafana, Coder, n8n
 
-Proxmox hosts two Windows Server virtual machines:
+---
+
+### MoServer
+
+The HP ProLiant MicroServer Gen10 running Proxmox with a single TrueNAS VM. Physical drives are passed through directly to TrueNAS for ZFS management. See the [hardware doc](../hardware/hp-microserver-gen10.md) and [TrueNAS doc](truenas.md) for details.
+
+Key service: TrueNAS (ZFS mirrored vdev pool — RAID 10 equivalent)
+
+---
+
+## Virtualization Design Principles
+
+### VMs vs LXC Containers
+
+| Use Case | Technology | Reason |
+|----------|-----------|--------|
+| Windows workloads (AD/DNS) | VM | Requires full OS isolation |
+| Direct hardware access (TrueNAS) | VM + disk passthrough | ZFS needs direct disk control |
+| Lightweight Linux services | LXC container | Lower overhead, faster startup |
+
+### Windows Server VMs (Hogwarts)
+
+Two Windows Server VMs provide Active Directory and DNS:
+
 - **DC01** – Primary Domain Controller
 - **DC02** – Secondary Domain Controller
 
-These VMs provide:
-- Active Directory
-- DNS services
-- Redundancy for authentication infrastructure
+See [Windows Servers](windows-servers.md) for full documentation.
 
-Running domain controllers in Proxmox provided experience with:
-- VM networking
-- DNS dependency handling
-- Domain controller promotion and demotion
-- Troubleshooting replication and role assignment
+### TrueNAS VM (MoServer)
 
----
-
-## Linux Containers (LXC)
-
-Linux containers are used for lightweight services where full VM isolation is unnecessary.
-
-Advantages of using LXC:
-- Lower resource overhead
-- Faster startup times
-- Simpler management for single-purpose services
-
-Containers are preferred for:
-- Media services
-- Supporting infrastructure
-- Utility services
-
----
-
-## Plex and Media Services
-
-Plex and related services are hosted within the Proxmox environment.
-
-Key considerations included:
-- Storage mapping
-- Permissions and ownership
-- Performance tuning
-- Service separation
-
-Through hosting Plex in Proxmox, I gained hands-on experience with:
-- Mount points and storage passthrough
-- UID/GID permission alignment
-- Separating media services from core infrastructure
-- Troubleshooting container permissions and filesystem access
-
-This portion of the lab represented a significant amount of real-world troubleshooting and learning.
+TrueNAS runs as a VM on MoServer with physical disk passthrough. It provides centralized NAS storage using a ZFS mirrored vdev pool (RAID 10 equivalent). See [TrueNAS documentation](truenas.md) for details.
 
 ---
 
 ## Networking Integration
 
-Proxmox is integrated into the VLAN-based network design.
+Proxmox is integrated into the VLAN-based network design across all nodes:
 
-- Proxmox management traffic resides on VLAN 20
-- VMs and containers inherit VLAN placement via bridged networking
-- Access is restricted to trusted networks
-
-This reinforced understanding of:
-- Linux bridges
-- VLAN tagging
-- Layer 2 vs Layer 3 responsibilities
+- Management traffic on VLAN 20
+- VMs and containers inherit VLAN placement via Linux bridges
+- Pi-hole on Hogwarts handles internal DNS for all services
+- Access to Proxmox UIs restricted to trusted networks
+- Tailscale on Hogwarts enables remote access without port forwarding
 
 ---
 
 ## Backups and Stability
 
-Basic backup and snapshot practices are used to:
+Basic backup and snapshot practices are used across all nodes to:
 - Protect critical VMs
 - Safely test configuration changes
 - Recover from misconfigurations
@@ -128,11 +108,10 @@ Snapshots were particularly useful during:
 
 ## Lessons Learned
 
-Working extensively with Proxmox provided practical experience with:
-- Virtualization fundamentals
-- Resource allocation and performance considerations
-- Storage and permission management
-- Troubleshooting complex, multi-layered issues
+Working across three Proxmox nodes provided practical experience with:
+- Virtualization fundamentals and resource planning
+- LXC container vs VM trade-offs
+- Disk passthrough for ZFS-based storage
+- Multi-node service distribution and isolation
+- Network integration with VLANs and Linux bridges
 - Running production-like services in a lab environment
-
-Proxmox has become the backbone of the homelab and a key learning platform.
